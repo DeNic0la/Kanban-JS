@@ -1,0 +1,98 @@
+openapi: 3.0.0
+servers:
+  - url: 'localhost:8000'
+info:
+  description: ''
+  version: 1.0.0
+  title: Backend
+  termsOfService: ''
+  contact:
+    email: ''
+tags: []
+paths:
+  '/api/column/{:columnId}/':
+    get:
+      summary: ''
+      description: ''
+      parameters: []
+      operationId: Get Cards
+      responses:
+        '200':
+          description: Default response
+  '/api/card/{:cardId}/':
+    get:
+      summary: Get Card information
+      description: ''
+      parameters:
+        - name: '{:columnId}'
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Id of the Column
+        - name: '{:cardId}'
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Id of the Card to get
+      operationId: Get Card
+      responses:
+        '200':
+          description: Card not Found
+    x-temp:
+      summary: ''
+      description: ''
+      parameters: []
+      operationId: Add Card
+      responses:
+        default:
+          description: Default response
+    post:
+      summary: ''
+      description: ''
+      parameters: []
+      operationId: Add Card
+      responses:
+        default:
+          description: Default response
+    patch:
+      summary: ''
+      description: ''
+      parameters: []
+      operationId: Modify Card
+      responses:
+        default:
+          description: Default response
+  '/api/column/{:columnId}/card/':
+    get:
+      summary: ''
+      description: ''
+      parameters: []
+      operationId: Get All Cards in Coulmn
+      responses:
+        default:
+          description: Default response
+  /api/column/:
+    get:
+      summary: ''
+      description: ''
+      parameters: []
+      operationId: Get All Columns
+      responses:
+        default:
+          description: Default response
+components:
+  schemas:
+    Card:
+      id: string
+      name: string
+      description: string
+    Column:
+      id: string
+      name: string
+      cards: []
+  securitySchemes: {}
+  links: {}
+  callbacks: {}
+security: []
