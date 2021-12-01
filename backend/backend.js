@@ -1,3 +1,4 @@
+'use strict'
 import { helpers, Router } from 'https://deno.land/x/oak/mod.ts';
 const backendRouter = new Router({prefix:'/api'});
 let columns = {
@@ -19,7 +20,7 @@ let columns = {
 };
 let cardCount = 0;
 function getGeneratedCard(){
-    return {id:cardCount++,name:"MeiVeryCoolCard"}
+    return {id:cardCount++,name:"MeiVeryCoolCard",desc:""}
 }
 for (let columnsKey in columns) {
     let cardi = [];
