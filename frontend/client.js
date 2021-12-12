@@ -20,11 +20,9 @@ function addCardToCol(card) {
 
 }
 function addButtonsToCard(card, domCard){
-    console.log("hello");
-    console.log(card.col);
+
     let forwBtn = domCard.querySelector(".forwButton");
     if (parseInt(card.col) === 3){
-        console.log("removeForw");
         forwBtn.remove();
     }
     else {
@@ -46,7 +44,6 @@ function addButtonsToCard(card, domCard){
     }
     let backBtn = domCard.querySelector(".backButton");
     if (parseInt(card.col) === 1){
-        console.log("removeBack");
         backBtn.remove();
     }
     else{
@@ -78,17 +75,6 @@ function getCardHTMLFromJson(card) {
     return cardTemplate.replace(/%cardId%/g, "card-" + card.id).replace(/%cardText%/g, card.name);
 }
 
-function removeCardFromCol(cardId) {
-    let cardToRemove = document.getElementById("card-" + cardId);
-    if (cardToRemove === null) {
-        return
-    }
-    cardToRemove.remove();
-}
-
-function moveCardToCol() {
-
-}
 
 function clearColumn(colId) {
     let col = document.getElementById("col-" + colId);
@@ -122,18 +108,9 @@ setInterval(async function () {
 }, 10000);//Updating from Backend every 10s
 
 reloadCardsFromApi();
-//TODO Initial loadings
 
-//TODO Continous loading
-
-//TODO Button Actions
-//add card
-let columnTODO = document.querySelector(".TODO");
-let cardTemplate = "<div class=\"items border border-light\" id='%cardId%'><div class=\"card shadow-sm\"><div class=\"card-body p-2\"><div class=\"card-title\"><h2>%cardText%</h2></div><button class=\"btn btn-primary btn-sm backButton\"><-</button><button class=\"btn btn-primary btn-sm forwButton\">-></button><br><button class=\"btn btn-primary btn-sm deleteButton\">Delete</button></div></div></div>";
 document.getElementById("save").addEventListener("click", async function () {
-
-
-    const putRequest = await fetch('/api/card/', {
+    await fetch('/api/card/', {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',

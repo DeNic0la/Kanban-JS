@@ -103,7 +103,6 @@ backendRouter.put("/card/", async (context) => {
     context.response.code = 200;
 });
 backendRouter.delete("/card/:cardId", (context)=> {
-    console.log("delete");
     const { cardId } = helpers.getQuery(context, { mergeParams: true });
     let cards = getCards();
     if (cards.hasOwnProperty(cardId)) {
