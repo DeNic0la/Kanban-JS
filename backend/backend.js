@@ -1,5 +1,5 @@
 'use strict'
-import {helpers, Router} from 'https://deno.land/x/oak/mod.ts';
+import {helpers, Router} from '../deps.js';
 
 const backendRouter = new Router({prefix:'/api'});
 let columns = {

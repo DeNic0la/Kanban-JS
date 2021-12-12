@@ -1,7 +1,5 @@
 'use strict'
-import { Application, Router } from 'https://deno.land/x/oak/mod.ts';
-import { renderFile, configure } from "https://deno.land/x/eta@v1.12.3/mod.ts"
-import {send} from "https://deno.land/x/oak@v6.3.1/mod.ts";
+import { send, renderFile, configure, Application, Router } from '../deps.js';
 
 //Path to the View Files
 const viewPath = `${Deno.cwd()}/frontend/views/`

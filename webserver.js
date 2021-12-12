@@ -1,4 +1,4 @@
-import { Application, Router } from 'https://deno.land/x/oak/mod.ts';
+import { Application, Router } from './deps.js';
 import {backendRouter} from "./backend/backend.js";
 import {frontendFiles} from "./frontend/frontend.js";
 
