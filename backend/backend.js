@@ -107,5 +107,17 @@ backendRouter.put("/card/", (context)=> {
 
     addCard(cardId,newCol,newCard);
 });
+backendRouter.delete("/card/:cardId", (context)=> {
+    const { cardId } = helpers.getQuery(context, { mergeParams: true });
+    let cards = getCards();
+    if (cards.hasOwnProperty(cardId)) {
+        let cardCol = cards[cardId].col;
+        removeCard(cardId,cardCol);
+    }
+    else {
+        context.response.code = 404;
+        return;
+    }
+});
 
 export {backendRouter};
