@@ -1,6 +1,6 @@
-# Kanban-JS
+# Kanban-JS M133
 
-Project von Laurin und Nicola.
+Project von Laurin und Nicola. 
 
 ### Current Run Command
 
