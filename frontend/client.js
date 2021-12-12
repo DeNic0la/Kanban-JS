@@ -9,6 +9,64 @@ function addCardToCol(card) {
     let col = document.getElementById("col-" + card.col);
     let cardHTML = getCardHTMLFromJson(card);
     col.insertAdjacentHTML('beforeend', cardHTML);
+    let cardDom = document.getElementById("card-"+card.id);
+
+    addButtonsToCard(card,cardDom);
+
+}
+function addButtonsToCard(card, domCard){
+    console.log("hello");
+    console.log(card.col);
+    let forwBtn = domCard.querySelector(".forwButton");
+    if (parseInt(card.col) === 3){
+        console.log("removeForw");
+        forwBtn.remove();
+    }
+    else {
+        forwBtn.addEventListener("click", async function () {
+            await fetch(`/api/card/${card.id}`, {
+                method: "PUT",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: card.name,
+                    col: parseInt(card.col) + 1,
+                })
+            }).then(value => {
+                reloadCardsFromApi();
+            });
+
+        });
+    }
+    let backBtn = domCard.querySelector(".backButton");
+    if (parseInt(card.col) === 1){
+        console.log("removeBack");
+        backBtn.remove();
+    }
+    else{
+        backBtn.addEventListener("click", async function () {
+            await fetch(`/api/card/${card.id}`, {
+                method: "PUT",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: card.name,
+                    col: parseInt(card.col) -1,
+                })
+            }).then(value => {
+                reloadCardsFromApi();
+            });
+        });
+    }
+    domCard.querySelector(".deleteButton").addEventListener("click", async function () {
+        await fetch(`/api/card/${card.id}`, {
+            method: "DELETE"
+        }).then(value => {
+            reloadCardsFromApi();
+        });
+    });
 }
 
 function getCardHTMLFromJson(card) {
@@ -21,6 +79,10 @@ function removeCardFromCol(cardId) {
         return
     }
     cardToRemove.remove();
+}
+
+function moveCardToCol() {
+
 }
 
 function clearColumn(colId) {
@@ -62,7 +124,7 @@ reloadCardsFromApi();
 //TODO Button Actions
 //add card
 let columnTODO = document.querySelector(".TODO");
-let cardTemplate = "<div class=\"items border border-light\" id='%cardId%'><div class=\"card shadow-sm\"><div class=\"card-body p-2\"><div class=\"card-title\"><h2>%cardText%</h2></div><button class=\"btn btn-primary btn-sm\"><-</button><button class=\"btn btn-primary btn-sm\">-></button><br><button class=\"btn btn-primary btn-sm delete\">Delete</button></div></div></div>";
+let cardTemplate = "<div class=\"items border border-light\" id='%cardId%'><div class=\"card shadow-sm\"><div class=\"card-body p-2\"><div class=\"card-title\"><h2>%cardText%</h2></div><button class=\"btn btn-primary btn-sm backButton\"><-</button><button class=\"btn btn-primary btn-sm forwButton\">-></button><br><button class=\"btn btn-primary btn-sm deleteButton\">Delete</button></div></div></div>";
 document.getElementById("save").addEventListener("click", async function () {
 
 
