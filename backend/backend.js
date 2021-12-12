@@ -19,14 +19,14 @@ let columns = {
     }
 };
 let cardCount = 0;
-function getGeneratedCard(){
-    return {id:cardCount++,name:"MeiVeryCoolCard",desc:""}
+function getGeneratedCard(colid){
+    return {id:cardCount++,name:"MeiVeryCoolCard",col:colid}
 }
 for (let columnsKey in columns) {
     let cardi = [];
-    cardi.push(getGeneratedCard());
-    cardi.push(getGeneratedCard());
-    cardi.push(getGeneratedCard());
+    cardi.push(getGeneratedCard(columnsKey));
+    cardi.push(getGeneratedCard(columnsKey));
+    cardi.push(getGeneratedCard(columnsKey));
     columns[columnsKey].cards = cardi
 }
 function getCards(){
