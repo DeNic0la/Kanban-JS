@@ -1,6 +1,7 @@
-import { Application, Router } from './deps.js';
-import {backendRouter} from "./backend/backend.js";
-import {frontendFiles} from "./frontend/frontend.js";
+'use strict'
+import { Application } from './deps.js';
+import { backendRouter } from "./backend/backend.js";
+import { frontendFiles } from "./frontend/frontend.js";
 
 const app = new Application();
 
