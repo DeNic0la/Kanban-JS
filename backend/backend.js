@@ -53,6 +53,7 @@ backendRouter.get("/column/:columnId", (context)=> {
     const { columnId } = helpers.getQuery(context, { mergeParams: true });
     if (columns.hasOwnProperty(columnId)){
         context.response.body = columns[columnId];
+        context.response.code = 200;
     }
     else {
         context.response.code = 404;
@@ -60,52 +61,46 @@ backendRouter.get("/column/:columnId", (context)=> {
 });
 backendRouter.get("/card/", (context)=> {
     context.response.body = getCards();
+    context.response.code = 200;
 });
 backendRouter.get("/card/:cardId", (context)=> {
     const { cardId } = helpers.getQuery(context, { mergeParams: true });
     let cards = getCards();
     if (cards.hasOwnProperty(cardId)) {
         context.response.body = cards[cardId]
+        context.response.code = 200;
     }
     else {
         context.response.code = 404;
     }
 });
-backendRouter.put("/card/:cardId", (context)=> {
-    const { cardId } = helpers.getQuery(context, { mergeParams: true });
+backendRouter.put("/card/:cardId", async (context) => {
+    const {cardId} = helpers.getQuery(context, {mergeParams: true});
 
     let cards = getCards();
     if (cards.hasOwnProperty(cardId)) {
-        let body = context.request.body({ type: 'form-data '});
-        let data = body.value.read();
+        const {col, name} = await context.request.body().value;
 
         let oldCol = cards[cardId].col;
-        let newName = data.get('name');
-        let newCol = data.get('col');
 
-        let newCard = {id:cardId,name:newName,col:newCol};
+        let newCard = {id: cardId, name: name, col: col};
 
-        removeCard(cardId,oldCol);
-        addCard(cardId,newCol,newCard);
-    }
-    else {
+        removeCard(cardId, oldCol);
+        addCard(cardId, col, newCard);
+        context.response.code = 200;
+    } else {
         context.response.code = 404;
-        return;
     }
 });
-backendRouter.put("/card/", (context)=> {
-    let body = context.request.body({ type: 'form-data '});
-    let data = body.value.read();
-
-    let name = data.get('name');
-    let col = data.get('col');
-    if (col === null||name===null){
+backendRouter.put("/card/", async (context) => {
+    const { col, name } = await context.request.body().value;
+    if (col === null || name === null) {
         context.response.code = 404;
         return;
     }
-    let newCard = {id:cardCount++,name:newName,col:newCol};
-
-    addCard(cardId,newCol,newCard);
+    let newCard = {id: cardCount++, name: name, col: parseInt(col)};
+    addCard(newCard.id, col, newCard);
+    context.response.code = 200;
 });
 backendRouter.delete("/card/:cardId", (context)=> {
     const { cardId } = helpers.getQuery(context, { mergeParams: true });
@@ -113,6 +108,7 @@ backendRouter.delete("/card/:cardId", (context)=> {
     if (cards.hasOwnProperty(cardId)) {
         let cardCol = cards[cardId].col;
         removeCard(cardId,cardCol);
+        context.response.code = 200;
     }
     else {
         context.response.code = 404;
