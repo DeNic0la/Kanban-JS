@@ -54,7 +54,7 @@ setInterval(async function () {
     await reloadCardsFromApi()
 }, 10000);//Updating from Backend every 10s
 
-
+reloadCardsFromApi();
 //TODO Initial loadings
 
 //TODO Continous loading
@@ -65,14 +65,20 @@ let columnTODO = document.querySelector(".TODO");
 let cardTemplate = "<div class=\"items border border-light\" id='%cardId%'><div class=\"card shadow-sm\"><div class=\"card-body p-2\"><div class=\"card-title\"><h2>%cardText%</h2></div><button class=\"btn btn-primary btn-sm\"><-</button><button class=\"btn btn-primary btn-sm\">-></button><br><button class=\"btn btn-primary btn-sm delete\">Delete</button></div></div></div>";
 document.getElementById("save").addEventListener("click", async function () {
 
-    await fetch("/api/card/", {
-        method: "PUT",
-        body: {
-            name: document.getElementById("cardDescription").value,
-            col: 1,
-            headers: {'Content-Type': 'application/json'}
-        }
-    });
+
+    const putRequest = await fetch('/api/card/', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(
+            {
+                name: document.getElementById("cardDescription").value,
+                col: 1,
+            }),
+    }).then(value => {
+        reloadCardsFromApi();
+    })
 
     //TODO reload
     // columnTODO.insertAdjacentHTML("beforeend", cardTemplate.replace(/%cardText%/g, document.getElementById("cardDescription").value).replace(/%cardId%/g, "card2"))
@@ -95,7 +101,7 @@ columnNames.forEach(function (item) {
 });
 
 //repalce %cardId%, %cardText%
-columnTODO.insertAdjacentHTML("beforeend", cardTemplate.replace(/%cardId%/g, "1"));
+//columnTODO.insertAdjacentHTML("beforeend", cardTemplate.replace(/%cardId%/g, "1"));
 
 
 //delete card
