@@ -53,6 +53,7 @@ backendRouter.get("/column/:columnId", (context)=> {
     const { columnId } = helpers.getQuery(context, { mergeParams: true });
     if (columns.hasOwnProperty(columnId)){
         context.response.body = columns[columnId];
+        context.response.code = 200;
     }
     else {
         context.response.code = 404;
@@ -60,12 +61,14 @@ backendRouter.get("/column/:columnId", (context)=> {
 });
 backendRouter.get("/card/", (context)=> {
     context.response.body = getCards();
+    context.response.code = 200;
 });
 backendRouter.get("/card/:cardId", (context)=> {
     const { cardId } = helpers.getQuery(context, { mergeParams: true });
     let cards = getCards();
     if (cards.hasOwnProperty(cardId)) {
         context.response.body = cards[cardId]
+        context.response.code = 200;
     }
     else {
         context.response.code = 404;
@@ -84,9 +87,9 @@ backendRouter.put("/card/:cardId", async (context) => {
 
         removeCard(cardId, oldCol);
         addCard(cardId, col, newCard);
+        context.response.code = 200;
     } else {
         context.response.code = 404;
-        return;
     }
 });
 backendRouter.put("/card/", async (context) => {
@@ -97,6 +100,7 @@ backendRouter.put("/card/", async (context) => {
     }
     let newCard = {id: cardCount++, name: name, col: parseInt(col)};
     addCard(newCard.id, col, newCard);
+    context.response.code = 200;
 });
 backendRouter.delete("/card/:cardId", (context)=> {
     console.log("delete");
@@ -105,6 +109,7 @@ backendRouter.delete("/card/:cardId", (context)=> {
     if (cards.hasOwnProperty(cardId)) {
         let cardCol = cards[cardId].col;
         removeCard(cardId,cardCol);
+        context.response.code = 200;
     }
     else {
         context.response.code = 404;
