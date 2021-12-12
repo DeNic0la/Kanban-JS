@@ -31,12 +31,18 @@ for (let columnsKey in columns) {
     }
     columns[columnsKey].cards = cardi
 }
+removeCard(4,2)
 function getCards(){
     return {...columns["1"].cards, ...columns["2"].cards, ...columns["3"].cards};
 }
-function removeCard(){
-
+function removeCard(cardId,colId){
+    let cards = columns[colId].cards;
+    delete cards[cardId];
 }
+function addCard(cardId,colId,card){
+    columns[colId].cards[cardId] = card;
+}
+
 backendRouter.get("/",(context)=>{
     context.response.body = "Hallo BackEnd";
 });
@@ -72,24 +78,34 @@ backendRouter.put("/card/:cardId", (context)=> {
     if (cards.hasOwnProperty(cardId)) {
         let body = context.request.body({ type: 'form-data '});
         let data = body.value.read();
-        let savedCard = cards[cardId];
-        savedCard.name = data.get('name');
-        savedCard.col = data.get('col');
+
+        let oldCol = cards[cardId].col;
+        let newName = data.get('name');
+        let newCol = data.get('col');
+
+        let newCard = {id:cardId,name:newName,col:newCol};
+
+        removeCard(cardId,oldCol);
+        addCard(cardId,newCol,newCard);
     }
     else {
         context.response.code = 404;
+        return;
     }
 });
 backendRouter.put("/card/", (context)=> {
     let body = context.request.body({ type: 'form-data '});
     let data = body.value.read();
 
+    let name = data.get('name');
     let col = data.get('col');
-    if (col === null){
+    if (col === null||name===null){
         context.response.code = 404;
+        return;
     }
-    let card = getGeneratedCard(col);
-    card.name = data.get('name');
+    let newCard = {id:cardCount++,name:newName,col:newCol};
+
+    addCard(cardId,newCol,newCard);
 });
 
 export {backendRouter};
