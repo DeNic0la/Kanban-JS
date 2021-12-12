@@ -110,6 +110,7 @@ setInterval(async function () {
 reloadCardsFromApi();
 
 document.getElementById("save").addEventListener("click", async function () {
+    let col = document.getElementById('selectColumn').value;
     await fetch('/api/card/', {
         method: 'PUT',
         headers: {
@@ -118,7 +119,7 @@ document.getElementById("save").addEventListener("click", async function () {
         body: JSON.stringify(
             {
                 name: document.getElementById("cardDescription").value,
-                col: 1,
+                col: col,
             }),
     }).then(value => {
         reloadCardsFromApi();
