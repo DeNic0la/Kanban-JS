@@ -1,5 +1,10 @@
 'use strict';
 
+let columnNames = ["TODO", "In Progress", "DONE"];
+let target = document.querySelector(".p-2 .row");
+let columnTemplate = "<div class=\"col\"><div class=\"col bg-light\"><div class=\"col-body\"><h6 class=\"col-title text-uppercase text-truncate py-2\">%colName%</h6><div id='%colId%' ></div></div></div></div>";
+let cardTemplate = "<div class=\"items border border-light\" id='%cardId%'><div class=\"card shadow-sm\"><div class=\"card-body p-2\"><div class=\"card-title\"><h2>%cardText%</h2></div><button class=\"btn btn-primary btn-sm backButton\"><-</button><button class=\"btn btn-primary btn-sm forwButton\">-></button><br><button class=\"btn btn-primary btn-sm deleteButton\">Delete</button></div></div></div>";
+
 document.loadList = async () => {
     const response = await fetch("/api/column/");
     return await response.json();
@@ -141,32 +146,10 @@ document.getElementById("save").addEventListener("click", async function () {
     }).then(value => {
         reloadCardsFromApi();
     })
-
-    //TODO reload
-    // columnTODO.insertAdjacentHTML("beforeend", cardTemplate.replace(/%cardText%/g, document.getElementById("cardDescription").value).replace(/%cardId%/g, "card2"))
-    // console.log( document.getElementById("cardDescription").value)
 });
-
-//Delete Button
-
-// left and right
-
-
-let columnNames = ["TODO", "In Progress", "DONE"];
-let target = document.querySelector(".p-2 .row");
-let template2 = "<div class=\"col\"><div class=\"col bg-light\"><div class=\"col-body\"><h6 class=\"col-title text-uppercase text-truncate py-2\">%colName%</h6><div id='%colId%' ></div></div></div></div>";
 
 let count = 0;
 columnNames.forEach(function (item) {
     count++;
-    target.insertAdjacentHTML("beforeend", template2.replace(/%colName%/g, item).replace(/%colId%/g, "col-" + count.toString()));
+    target.insertAdjacentHTML("beforeend", columnTemplate.replace(/%colName%/g, item).replace(/%colId%/g, "col-" + count.toString()));
 });
-
-//repalce %cardId%, %cardText%
-//columnTODO.insertAdjacentHTML("beforeend", cardTemplate.replace(/%cardId%/g, "1"));
-
-
-//delete card
-
-
-// drag and drop/moving the card
