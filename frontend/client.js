@@ -80,9 +80,6 @@ document.getElementById("save").addEventListener("click", async function () {
 });
 
 //Delete Button
-document.querySelector(".btn.btn-primary.btn-sm.delete").addEventListener("click", function () {
-
-});
 
 // left and right
 
