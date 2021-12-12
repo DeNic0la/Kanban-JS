@@ -1,21 +1,22 @@
 'use strict'
-import { helpers, Router } from 'https://deno.land/x/oak/mod.ts';
+import {helpers, Router} from 'https://deno.land/x/oak/mod.ts';
+
 const backendRouter = new Router({prefix:'/api'});
 let columns = {
     1:{
         id:1,
         name: "TODO",
-        cards:[],
+        cards:{},
     },
     2:{
         id:2,
         name: "Work in Progress",
-        cards:[],
+        cards:{},
     },
     3:{
         id:3,
         name: "Done",
-        cards:[],
+        cards:{},
     }
 };
 let cardCount = 0;
@@ -23,22 +24,18 @@ function getGeneratedCard(colid){
     return {id:cardCount++,name:"MeiVeryCoolCard",col:colid}
 }
 for (let columnsKey in columns) {
-    let cardi = [];
-    cardi.push(getGeneratedCard(columnsKey));
-    cardi.push(getGeneratedCard(columnsKey));
-    cardi.push(getGeneratedCard(columnsKey));
+    let cardi = {};
+    for (let i = 0; i < 3; i++) {
+        let generatedCard = getGeneratedCard(columnsKey);
+        cardi[generatedCard.id] = generatedCard;
+    }
     columns[columnsKey].cards = cardi
 }
 function getCards(){
-    let cards = {};
-    for (let columnsKey in columns) {
-        let leCards = columns[columnsKey].cards;
-        for (let leCardsKey in leCards) {
-            let leCard = leCards[leCardsKey];
-            cards[leCard.id] = leCard;
-        }
-    }
-    return cards;
+    return {...columns["1"].cards, ...columns["2"].cards, ...columns["3"].cards};
+}
+function removeCard(){
+
 }
 backendRouter.get("/",(context)=>{
     context.response.body = "Hallo BackEnd";
@@ -68,7 +65,7 @@ backendRouter.get("/card/:cardId", (context)=> {
         context.response.code = 404;
     }
 });
-backendRouter.update("/card/:cardId", (context)=> {
+backendRouter.put("/card/:cardId", (context)=> {
     const { cardId } = helpers.getQuery(context, { mergeParams: true });
 
     let cards = getCards();
@@ -78,7 +75,6 @@ backendRouter.update("/card/:cardId", (context)=> {
         let savedCard = cards[cardId];
         savedCard.name = data.get('name');
         savedCard.col = data.get('col');
-        columns[savedCard.col].cards.push(savedCard);
     }
     else {
         context.response.code = 404;
