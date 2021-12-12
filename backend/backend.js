@@ -64,7 +64,36 @@ backendRouter.get("/card/:cardId", (context)=> {
     if (cards.hasOwnProperty(cardId)) {
         context.response.body = cards[cardId]
     }
+    else {
+        context.response.code = 404;
+    }
 });
+backendRouter.update("/card/:cardId", (context)=> {
+    const { cardId } = helpers.getQuery(context, { mergeParams: true });
 
+    let cards = getCards();
+    if (cards.hasOwnProperty(cardId)) {
+        let body = context.request.body({ type: 'form-data '});
+        let data = body.value.read();
+        let savedCard = cards[cardId];
+        savedCard.name = data.get('name');
+        savedCard.col = data.get('col');
+        columns[savedCard.col].cards.push(savedCard);
+    }
+    else {
+        context.response.code = 404;
+    }
+});
+backendRouter.put("/card/", (context)=> {
+    let body = context.request.body({ type: 'form-data '});
+    let data = body.value.read();
+
+    let col = data.get('col');
+    if (col === null){
+        context.response.code = 404;
+    }
+    let card = getGeneratedCard(col);
+    card.name = data.get('name');
+});
 
 export {backendRouter};
